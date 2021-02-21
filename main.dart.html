@@ -1,0 +1,147 @@
+<html>
+<head>
+<title>main.dart</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #6a8759;}
+.s2 { color: #cc7832;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.dart</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">'dart:convert'</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">'package:flutter/material.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:font_awesome_flutter/font_awesome_flutter.dart'</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'package:http/http.dart' </span><span class="s0">as http</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">'dart:convert'</span><span class="s2">;</span>
+
+<span class="s2">void </span><span class="s0">main () =&gt; runApp(</span>
+  <span class="s0">MaterialApp(</span>
+    <span class="s0">title: </span><span class="s1">&quot;Weather App&quot;</span><span class="s2">,</span>
+    <span class="s0">home: Home()</span><span class="s2">,</span>
+  <span class="s0">)</span>
+<span class="s0">)</span><span class="s2">;</span>
+
+<span class="s2">class </span><span class="s0">Home </span><span class="s2">extends </span><span class="s0">StatefulWidget {</span>
+  <span class="s0">@override</span>
+  <span class="s0">State&lt;StatefulWidget&gt; createState () {</span>
+    <span class="s2">return </span><span class="s0">_HomeState()</span><span class="s2">;</span>
+  <span class="s0">}</span>
+  <span class="s0">}</span>
+
+  <span class="s2">class </span><span class="s0">_HomeState </span><span class="s2">extends </span><span class="s0">State&lt;Home&gt;{</span>
+
+  <span class="s2">var </span><span class="s0">temp</span><span class="s2">;</span>
+  <span class="s2">var </span><span class="s0">description</span><span class="s2">;</span>
+  <span class="s2">var </span><span class="s0">currently</span><span class="s2">;</span>
+  <span class="s2">var </span><span class="s0">humidity</span><span class="s2">;</span>
+  <span class="s2">var </span><span class="s0">windSpeed</span><span class="s2">;</span>
+
+  <span class="s0">Future getWeather () async{</span>
+    <span class="s0">http.Response response = await http.get(</span><span class="s1">&quot;http://api.openweathermap.org/data/2.5/weather?q=Brooklyn&amp;units=imperial&amp;appid=3345ab5a92f29046806f539d5f9e2cb1&quot;</span><span class="s0">)</span><span class="s2">;</span>
+    <span class="s2">var </span><span class="s0">results = jsonDecode(response.body)</span><span class="s2">;</span>
+    <span class="s0">setState(() {</span>
+      <span class="s2">this</span><span class="s0">.temp = results[</span><span class="s1">'main'</span><span class="s0">][</span><span class="s1">'temp'</span><span class="s0">]</span><span class="s2">;</span>
+      <span class="s2">this</span><span class="s0">.description = results[</span><span class="s1">'weather'</span><span class="s0">][</span><span class="s3">0</span><span class="s0">][</span><span class="s1">'description'</span><span class="s0">]</span><span class="s2">;</span>
+      <span class="s2">this</span><span class="s0">.currently = results[</span><span class="s1">'weather'</span><span class="s0">][</span><span class="s3">0</span><span class="s0">][</span><span class="s1">'main'</span><span class="s0">]</span><span class="s2">;</span>
+      <span class="s2">this</span><span class="s0">.humidity = results[</span><span class="s1">'main'</span><span class="s0">][</span><span class="s1">'humidity'</span><span class="s0">]</span><span class="s2">;</span>
+      <span class="s2">this</span><span class="s0">.windSpeed = results[</span><span class="s1">'wind'</span><span class="s0">][</span><span class="s1">'speed'</span><span class="s0">]</span><span class="s2">;</span>
+    <span class="s0">})</span><span class="s2">;</span>
+  <span class="s0">}</span>
+
+  <span class="s0">@override</span>
+  <span class="s2">void </span><span class="s0">initState () {</span>
+    <span class="s2">super</span><span class="s0">.initState()</span><span class="s2">;</span>
+    <span class="s2">this</span><span class="s0">.getWeather()</span><span class="s2">;</span>
+  <span class="s0">}</span>
+
+  <span class="s0">@override</span>
+  <span class="s0">Widget build (BuildContext context) {</span>
+    <span class="s2">return </span><span class="s0">Scaffold(</span>
+      <span class="s0">body: Column(</span>
+        <span class="s0">children: &lt;Widget&gt;[</span>
+          <span class="s0">Container(</span>
+            <span class="s0">height: MediaQuery.of(context).size.height / </span><span class="s3">3</span><span class="s2">,</span>
+            <span class="s0">width: MediaQuery.of(context).size.width</span><span class="s2">,</span>
+            <span class="s0">color: Colors.red</span><span class="s2">,</span>
+            <span class="s0">child: Column(</span>
+              <span class="s0">mainAxisAlignment: MainAxisAlignment.center</span><span class="s2">,</span>
+              <span class="s0">crossAxisAlignment: CrossAxisAlignment.center</span><span class="s2">,</span>
+              <span class="s0">children: &lt;Widget&gt;[</span>
+               <span class="s0">Padding(</span>
+                 <span class="s0">padding: EdgeInsets.only(bottom: </span><span class="s3">10.0</span><span class="s0">)</span><span class="s2">,</span>
+                 <span class="s0">child: Text(</span>
+                   <span class="s1">&quot;Currently in Brooklyn&quot;</span><span class="s2">,</span>
+                   <span class="s0">style: TextStyle(</span>
+                     <span class="s0">color: Colors.white</span><span class="s2">,</span>
+                     <span class="s0">fontSize: </span><span class="s3">14.0</span><span class="s2">,</span>
+                     <span class="s0">fontWeight: FontWeight.w600</span>
+                   <span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">)</span><span class="s2">,</span>
+                 <span class="s0">)</span><span class="s2">,</span>
+                <span class="s0">Text(</span>
+                  <span class="s0">temp != </span><span class="s2">null </span><span class="s0">? temp.toString() + </span><span class="s1">&quot;\u00B0&quot; </span><span class="s0">: </span><span class="s1">&quot;Loading&quot;</span><span class="s2">,</span>
+                  <span class="s0">style: TextStyle(</span>
+                    <span class="s0">color: Colors.white</span><span class="s2">,</span>
+                    <span class="s0">fontSize: </span><span class="s3">40.0</span><span class="s2">,</span>
+                    <span class="s0">fontWeight: FontWeight.w600</span>
+                  <span class="s0">)</span><span class="s2">,</span>
+                <span class="s0">)</span><span class="s2">,</span>
+                <span class="s0">Padding(</span>
+                  <span class="s0">padding: EdgeInsets.only(top: </span><span class="s3">10.0</span><span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">child: Text(</span>
+                    <span class="s0">currently != </span><span class="s2">null </span><span class="s0">? currently.toString() : </span><span class="s1">&quot;Loading&quot;</span><span class="s2">,</span>
+                    <span class="s0">style: TextStyle(</span>
+                      <span class="s0">color: Colors.white</span><span class="s2">,</span>
+                      <span class="s0">fontSize: </span><span class="s3">14.0</span><span class="s2">,</span>
+                      <span class="s0">fontWeight: FontWeight.w600</span>
+                    <span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">)</span><span class="s2">,</span>
+                <span class="s0">)</span>
+              <span class="s0">]</span><span class="s2">,</span>
+            <span class="s0">)</span><span class="s2">,</span>
+          <span class="s0">)</span><span class="s2">,</span>
+          <span class="s0">Expanded(</span>
+            <span class="s0">child: Padding(</span>
+              <span class="s0">padding: EdgeInsets.all(</span><span class="s3">20.0</span><span class="s0">)</span><span class="s2">,</span>
+              <span class="s0">child: ListView(</span>
+                <span class="s0">children: &lt;Widget&gt;[</span>
+                  <span class="s0">ListTile(</span>
+                    <span class="s0">leading: FaIcon(FontAwesomeIcons.thermometerHalf)</span><span class="s2">,</span>
+                    <span class="s0">title: Text(</span><span class="s1">&quot;Temperature&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                    <span class="s0">trailing: Text(temp != </span><span class="s2">null </span><span class="s0">? temp.toString() + </span><span class="s1">&quot;\u00B0&quot; </span><span class="s0">: </span><span class="s1">&quot;Loading&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">ListTile(</span>
+                    <span class="s0">leading: FaIcon(FontAwesomeIcons.cloud)</span><span class="s2">,</span>
+                    <span class="s0">title: Text(</span><span class="s1">&quot;Weather&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                    <span class="s0">trailing: Text(description != </span><span class="s2">null </span><span class="s0">? description.toString() : </span><span class="s1">&quot;Loading&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">ListTile(</span>
+                    <span class="s0">leading: FaIcon(FontAwesomeIcons.sun)</span><span class="s2">,</span>
+                    <span class="s0">title: Text(</span><span class="s1">&quot;Humidity&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                    <span class="s0">trailing: Text(humidity != </span><span class="s2">null </span><span class="s0">? humidity.toString() : </span><span class="s1">&quot;Loading&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">ListTile(</span>
+                    <span class="s0">leading: FaIcon(FontAwesomeIcons.wind)</span><span class="s2">,</span>
+                    <span class="s0">title: Text(</span><span class="s1">&quot;Wind Speed&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                    <span class="s0">trailing: Text(windSpeed != </span><span class="s2">null </span><span class="s0">? windSpeed.toString() : </span><span class="s1">&quot;Loading&quot;</span><span class="s0">)</span><span class="s2">,</span>
+                  <span class="s0">)</span><span class="s2">,</span>
+                <span class="s0">]</span><span class="s2">,</span>
+              <span class="s0">)</span><span class="s2">,</span>
+            <span class="s0">)</span><span class="s2">,</span>
+          <span class="s0">)</span>
+        <span class="s0">]</span><span class="s2">,</span>
+      <span class="s0">)</span><span class="s2">,</span>
+    <span class="s0">)</span><span class="s2">;</span>
+  <span class="s0">}</span>
+<span class="s0">}</span>
+</pre>
+</body>
+</html>
